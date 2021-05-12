@@ -18,7 +18,7 @@ public class DistributeTask implements Runnable {
         try(Scanner scanner = new Scanner(this.socket.getInputStream())) {
             while (scanner.hasNextLine()) {
                 String command = scanner.nextLine();
-                System.out.println("--- Executing Command: " + command + " for " + this.socket);
+                System.out.println("--- Executing Command: [" + command + "] for " + this.socket);
             }
 
         } catch (Exception e) {
