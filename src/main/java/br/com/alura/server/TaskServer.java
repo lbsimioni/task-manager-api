@@ -34,7 +34,7 @@ public class TaskServer implements Runnable {
             Socket socket = this.serverSocket.accept();
             System.out.println("Accepting new client in port: " + socket.getPort());
 
-            this.threadPool.execute(new DistributeTask(this, socket));
+            this.threadPool.execute(new DistributeTask(this.threadPool, this, socket));
         } catch (SocketException e) {}
     }
 
