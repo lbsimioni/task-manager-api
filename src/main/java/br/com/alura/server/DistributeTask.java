@@ -29,15 +29,17 @@ public class DistributeTask implements Runnable {
                 String command = scanner.nextLine();
                 System.out.println("--- Executing Command: [" + command + "] for " + this.socket);
 
-                switch (command) {
+                Runnable commandThread = null;
+
+                switch (command.trim().toLowerCase()) {
                     case "c1": {
                         printStream.println("Command c1 confirmed");
-                        this.threadPool.execute(new CommandC1(printStream));
+                        commandThread = new CommandC1(printStream);
                         break;
                     }
                     case "c2": {
                         printStream.println("Command c2 confirmed");
-                        this.threadPool.execute(new CommandC2(printStream));
+                        commandThread = new CommandC2(printStream);
                         break;
                     }
                     case "shutdown": {
@@ -46,9 +48,16 @@ public class DistributeTask implements Runnable {
                         this.taskServer.stop();
                         break;
                     }
+                    case "exception": {
+                        throw new RuntimeException("Send Exception");
+                    }
                     default: {
                         printStream.println("Command not found!");
                     }
+                }
+
+                if (commandThread != null) {
+                    this.threadPool.execute(commandThread);
                 }
             }
 

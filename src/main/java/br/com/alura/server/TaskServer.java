@@ -1,5 +1,7 @@
 package br.com.alura.server;
 
+import br.com.alura.server.exceptions.ExceptionHandler;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -17,7 +19,11 @@ public class TaskServer implements Runnable {
     public TaskServer() throws IOException {
         System.out.println("--- Starting Server ---");
         this.serverSocket = new ServerSocket(12345);
-        this.threadPool = Executors.newCachedThreadPool();
+        this.threadPool = Executors.newCachedThreadPool(r -> {
+            Thread thread = new Thread(r);
+            thread.setUncaughtExceptionHandler(new ExceptionHandler(this));
+            return thread;
+        });
         this.isRunning = new AtomicBoolean(true);
         System.out.println("--- Started Server ---");
     }

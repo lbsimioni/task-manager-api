@@ -6,7 +6,6 @@ public class CommandC2 implements Runnable {
     private PrintStream printStream;
 
     public CommandC2(PrintStream printStream) {
-
         this.printStream = printStream;
     }
 
