@@ -1,14 +1,15 @@
 package br.com.alura.server;
 
-import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
 import java.util.Scanner;
 
 public class DistributeTask implements Runnable {
+    private TaskServer taskServer;
     private Socket socket;
 
-    public DistributeTask(Socket socket) {
+    public DistributeTask(TaskServer taskServer, Socket socket) {
+        this.taskServer = taskServer;
         this.socket = socket;
     }
 
@@ -29,6 +30,12 @@ public class DistributeTask implements Runnable {
                     }
                     case "c2": {
                         printStream.println("Command c2 confirmed");
+                        break;
+                    }
+                    case "shutdown": {
+                        System.out.println("--- Server Turning off ---");
+                        printStream.println("--- Server Turning off ---");
+                        this.taskServer.stop();
                         break;
                     }
                     default: {
