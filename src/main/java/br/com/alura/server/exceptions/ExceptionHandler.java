@@ -5,7 +5,7 @@ import br.com.alura.server.TaskServer;
 import java.lang.Thread.UncaughtExceptionHandler;
 
 public class ExceptionHandler implements UncaughtExceptionHandler {
-    private TaskServer taskServer;
+    private final TaskServer taskServer;
 
     public ExceptionHandler(TaskServer taskServer) {
 
@@ -14,7 +14,7 @@ public class ExceptionHandler implements UncaughtExceptionHandler {
 
     @Override
     public void uncaughtException(Thread thread, Throwable throwable) {
-        System.out.println("--- Server Application Failed in " + thread.getName() + " ---");
-        System.out.println("Exception: " + throwable.getMessage());
+        System.err.println("--- Server Application Failed in " + thread.getName() + " ---");
+        System.err.println("Exception: " + throwable.getMessage());
     }
 }

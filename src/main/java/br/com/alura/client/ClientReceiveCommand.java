@@ -3,7 +3,7 @@ package br.com.alura.client;
 import java.util.Scanner;
 
 public class ClientReceiveCommand implements Runnable {
-    private Scanner scanner;
+    private final Scanner scanner;
 
     public ClientReceiveCommand(Scanner scanner) {
         this.scanner = scanner;

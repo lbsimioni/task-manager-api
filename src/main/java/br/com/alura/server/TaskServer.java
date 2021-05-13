@@ -11,9 +11,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class TaskServer implements Runnable {
-    private ServerSocket serverSocket;
-    private ExecutorService threadPool;
-    private AtomicBoolean isRunning;
+    private final ServerSocket serverSocket;
+    private final ExecutorService threadPool;
+    private final AtomicBoolean isRunning;
     // private volatile boolean isRunning;
 
     public TaskServer() throws IOException {

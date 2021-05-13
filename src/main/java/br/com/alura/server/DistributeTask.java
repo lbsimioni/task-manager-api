@@ -1,17 +1,18 @@
 package br.com.alura.server;
 
 import br.com.alura.server.commands.CommandC1;
-import br.com.alura.server.commands.CommandC2;
+import br.com.alura.server.commands.CommandC2BDAccess;
+import br.com.alura.server.commands.CommandC2CallWS;
 
 import java.io.PrintStream;
 import java.net.Socket;
 import java.util.Scanner;
-import java.util.concurrent.ExecutorService;
+import java.util.concurrent.*;
 
 public class DistributeTask implements Runnable {
-    private ExecutorService threadPool;
-    private TaskServer taskServer;
-    private Socket socket;
+    private final ExecutorService threadPool;
+    private final TaskServer taskServer;
+    private final Socket socket;
 
     public DistributeTask(ExecutorService threadPool, TaskServer taskServer, Socket socket) {
         this.threadPool = threadPool;
@@ -29,17 +30,40 @@ public class DistributeTask implements Runnable {
                 String command = scanner.nextLine();
                 System.out.println("--- Executing Command: [" + command + "] for " + this.socket);
 
-                Runnable commandThread = null;
 
                 switch (command.trim().toLowerCase()) {
                     case "c1": {
                         printStream.println("Command c1 confirmed");
-                        commandThread = new CommandC1(printStream);
+                        this.threadPool.execute(new CommandC1(printStream));
                         break;
                     }
                     case "c2": {
                         printStream.println("Command c2 confirmed");
-                        commandThread = new CommandC2(printStream);
+//                        FutureTask<String> futureTaskWS = new FutureTask<>(new CommandC2CallWS(printStream));
+//                        new Thread(futureTaskWS).start();
+//                        String result = futureTaskWS.get();
+
+                        Future<String> futureWS = this.threadPool.submit(new CommandC2CallWS(printStream));
+                        Future<String> futureBD = this.threadPool.submit(new CommandC2BDAccess(printStream));
+
+                        this.threadPool.submit(() -> {
+                            System.out.println("--- Server waiting result for c2 command ---");
+
+                            try {
+                                String magicNumberWS = futureWS.get(20, TimeUnit.SECONDS);
+                                String magicNumberBD = futureBD.get(20, TimeUnit.SECONDS);
+
+                                printStream.println("--- Command c2 (WS) result: " + magicNumberWS + " ---");
+                                printStream.println("--- Command c2 (BD) result: " + magicNumberBD + " ---");
+                            } catch (InterruptedException | ExecutionException | TimeoutException e) {
+                                futureWS.cancel(Boolean.TRUE);
+                                futureBD.cancel(Boolean.TRUE);
+                                System.out.println("--- Command c2 failed ----");
+                                e.printStackTrace();
+                            }
+
+                            System.out.println("--- Server executed c2 command ---");
+                        });
                         break;
                     }
                     case "shutdown": {
@@ -54,10 +78,6 @@ public class DistributeTask implements Runnable {
                     default: {
                         printStream.println("Command not found!");
                     }
-                }
-
-                if (commandThread != null) {
-                    this.threadPool.execute(commandThread);
                 }
             }
 

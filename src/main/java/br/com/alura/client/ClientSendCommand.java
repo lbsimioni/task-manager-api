@@ -4,8 +4,8 @@ import java.io.PrintStream;
 import java.util.Scanner;
 
 public class ClientSendCommand implements Runnable {
-    private PrintStream printStream;
-    private Scanner scanner;
+    private final PrintStream printStream;
+    private final Scanner scanner;
 
     public ClientSendCommand(PrintStream printStream, Scanner scanner) {
         this.printStream = printStream;

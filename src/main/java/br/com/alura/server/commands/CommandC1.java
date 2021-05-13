@@ -3,7 +3,7 @@ package br.com.alura.server.commands;
 import java.io.PrintStream;
 
 public class CommandC1 implements Runnable {
-    private PrintStream printStream;
+    private final PrintStream printStream;
 
     public CommandC1(PrintStream printStream) {
         this.printStream = printStream;
