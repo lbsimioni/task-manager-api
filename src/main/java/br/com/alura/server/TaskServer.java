@@ -19,29 +19,29 @@ public class TaskServer implements Runnable {
     // private volatile boolean isRunning;
 
     public TaskServer() throws IOException {
-        System.out.println("--- Starting Server ---");
+        System.out.println("[SERVER] Starting Server");
         this.serverSocket = new ServerSocket(12345);
         this.threadPool = Executors.newCachedThreadPool(r -> {
             Thread thread = new Thread(r);
-            thread.setUncaughtExceptionHandler(new ExceptionHandler(this));
+            thread.setUncaughtExceptionHandler(new ExceptionHandler());
             return thread;
         });
         this.isRunning = new AtomicBoolean(true);
         this.startQueue();
-        System.out.println("--- Started Server ---");
+        System.out.println("[SERVER] Started Server");
     }
 
     public void stop() throws IOException {
         this.isRunning.set(false);
         this.serverSocket.close();
         this.threadPool.shutdown();
-        System.out.println("--- Server Stopped ---");
+        System.out.println("[SERVER] Server Stopped");
     }
 
     private void newClient() throws IOException {
         try {
             Socket socket = this.serverSocket.accept();
-            System.out.println("Accepting new client in port: " + socket.getPort());
+            System.out.println("[SERVER] Accepting New Client in Port: " + socket.getPort());
 
             this.threadPool.execute(new DistributeTask(this.threadPool, this, socket));
         } catch (SocketException e) {}
@@ -50,7 +50,10 @@ public class TaskServer implements Runnable {
     private void startQueue() {
         CommandQueue.init();
         for (int i = 0; i < 2; i++) {
-            this.threadPool.execute(new QueueCommandConsume());
+            Thread thread = new Thread(new QueueCommandConsume());
+            thread.setUncaughtExceptionHandler(new ExceptionHandler());
+            thread.setDaemon(true);
+            thread.start();
         }
 
     }
@@ -63,7 +66,7 @@ public class TaskServer implements Runnable {
             }
         } catch (Exception e) {
             System.out.println("----------------------------------");
-            System.out.println("--- Server Application failed ---");
+            System.out.println("[SERVER] Server Application Failed");
             e.printStackTrace();
         }
 

@@ -13,13 +13,13 @@ public class CommandC2CallWS implements Callable<String> {
 
     @Override
     public String call() throws Exception  {
-        this.printStream.println("--- Server Calling Web Service for command c2 ---");
+        this.printStream.println("Server Calling Web Service for Command c2");
 
-        Thread.sleep(10000);
+        Thread.sleep(7000);
 
         int number = new Random().nextInt(100) + 1;
 
-        this.printStream.println("--- Server Called Web Service for command c2 ---");
+        this.printStream.println("Server Called Web Service for Command c2");
 
         return Integer.toString(number);
     }

@@ -11,14 +11,14 @@ public class ClientReceiveCommand implements Runnable {
 
     @Override
     public void run() {
-        System.out.println("--- Client Receiving Data From Server ---");
+        System.out.println("[CLIENT] Client Receiving Data From Server");
 
         while (this.scanner.hasNextLine()) {
             String line = this.scanner.nextLine();
-            System.out.println(line);
+            System.out.println("[CLIENT] Client Receive: " + line);
         }
 
         scanner.close();
-        System.out.println("--- Client Stop Receiving Data From Server ---");
+        System.out.println("[CLIENT] Client Stop Receiving Data From Server");
     }
 }

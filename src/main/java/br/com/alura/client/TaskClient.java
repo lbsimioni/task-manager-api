@@ -11,7 +11,7 @@ public class TaskClient implements Runnable {
 
 
         Socket socket = new Socket("localhost", 12345);
-        System.out.println("--- Client Connected ---");
+        System.out.println("[CLIENT] Client Connected");
 
         PrintStream printStreamClient = new PrintStream(socket.getOutputStream());
 
@@ -28,12 +28,12 @@ public class TaskClient implements Runnable {
     @Override
     public void run() {
         try {
-            System.out.println("--- Starting Client ---");
+            System.out.println("[CLIENT] Starting Client");
             TaskClient.start();
-            System.out.println("--- Client Ended ---");
+            System.out.println("[CLIENT] Client Stopped");
         } catch (Exception e) {
             System.out.println("----------------------------------");
-            System.out.println("--- Client Application failed ---");
+            System.out.println("[CLIENT] Client Application failed");
             e.printStackTrace();
         }
     }

@@ -14,7 +14,7 @@ public class ClientSendCommand implements Runnable {
 
     @Override
     public void run() {
-        System.out.println("--- Client Sending Data ---");
+        System.out.println("[CLIENT] Client Sending Data");
         while (this.scanner.hasNextLine()) {
             String line = scanner.nextLine();
 
@@ -23,9 +23,13 @@ public class ClientSendCommand implements Runnable {
             }
 
             this.printStream.println(line);
+
+            if (line.trim().equals("shutdown")) {
+                break;
+            }
         }
 
         this.scanner.close();
-        System.out.println("--- Client Stop to Sending Data ---");
+        System.out.println("[CLIENT] Client Stop to Sending Data");
     }
 }

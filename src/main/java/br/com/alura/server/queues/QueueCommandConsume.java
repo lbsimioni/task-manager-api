@@ -12,9 +12,9 @@ public class QueueCommandConsume implements Runnable {
             while ((command = CommandQueue.take()) != null) {
                 int  actualCommandNumber = QueueCommandConsume.commandNumber++;
 
-                System.out.println("--- Consuming " + command + ", number: " + actualCommandNumber + " ---");
+                System.out.println("[SERVER] Consuming " + command + ", number: " + actualCommandNumber);
                 Thread.sleep(5000);
-                System.out.println("--- Consumed " + command + ", number: " + actualCommandNumber +  " ---");
+                System.out.println("[SERVER] Consumed " + command + ", number: " + actualCommandNumber);
             }
 
         } catch (InterruptedException e) {

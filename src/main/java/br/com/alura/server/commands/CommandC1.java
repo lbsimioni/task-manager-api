@@ -11,13 +11,14 @@ public class CommandC1 implements Runnable {
 
     @Override
     public void run() {
-        this.printStream.println("--- Server Executing command c1 ---");
+        this.printStream.println("Server Executing Command c1");
         try {
-            Thread.sleep(20000);
+            Thread.sleep(5000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
 
-        this.printStream.println("--- Server Executed command c1 ---");
+        this.printStream.println("Server Executed Command c1");
+        System.out.println("[SERVER] Server Executed Command c1");
     }
 }

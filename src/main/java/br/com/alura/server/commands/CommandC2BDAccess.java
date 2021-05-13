@@ -13,13 +13,13 @@ public class CommandC2BDAccess implements Callable<String> {
 
     @Override
     public String call() throws Exception  {
-        this.printStream.println("--- Server Calling BD Access for command c2 ---");
+        this.printStream.println("Server Calling BD Access for Command c2");
 
-        Thread.sleep(15000);
+        Thread.sleep(5000);
         
         int number = new Random().nextInt(100) + 1;
 
-        this.printStream.println("--- Server Called BD Access for command c2 ---");
+        this.printStream.println("Server Called BD Access for Command c2");
 
         return Integer.toString(number);
     }
