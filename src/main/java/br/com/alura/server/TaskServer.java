@@ -1,6 +1,8 @@
 package br.com.alura.server;
 
 import br.com.alura.server.exceptions.ExceptionHandler;
+import br.com.alura.server.queues.CommandQueue;
+import br.com.alura.server.queues.QueueCommandConsume;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -25,6 +27,7 @@ public class TaskServer implements Runnable {
             return thread;
         });
         this.isRunning = new AtomicBoolean(true);
+        this.startQueue();
         System.out.println("--- Started Server ---");
     }
 
@@ -42,6 +45,14 @@ public class TaskServer implements Runnable {
 
             this.threadPool.execute(new DistributeTask(this.threadPool, this, socket));
         } catch (SocketException e) {}
+    }
+
+    private void startQueue() {
+        CommandQueue.init();
+        for (int i = 0; i < 2; i++) {
+            this.threadPool.execute(new QueueCommandConsume());
+        }
+
     }
 
     @Override

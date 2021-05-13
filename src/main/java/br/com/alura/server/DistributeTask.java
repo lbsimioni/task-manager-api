@@ -3,9 +3,11 @@ package br.com.alura.server;
 import br.com.alura.server.commands.CommandC1;
 import br.com.alura.server.commands.CommandC2BDAccess;
 import br.com.alura.server.commands.CommandC2CallWS;
+import br.com.alura.server.queues.CommandQueue;
 
 import java.io.PrintStream;
 import java.net.Socket;
+import java.util.Queue;
 import java.util.Scanner;
 import java.util.concurrent.*;
 
@@ -64,6 +66,13 @@ public class DistributeTask implements Runnable {
 
                             System.out.println("--- Server executed c2 command ---");
                         });
+                        break;
+                    }
+                    case "add in queue: command": {
+                        System.out.println("--- Server adding command in Queue ---");
+                        printStream.println("--- Server adding command in Queue ---");
+
+                        CommandQueue.put(command.replace("add in queue: ", ""));
                         break;
                     }
                     case "shutdown": {
